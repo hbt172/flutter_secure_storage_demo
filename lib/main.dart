@@ -8,7 +8,7 @@ import 'package:secure_storage_flutter_demo/SecureStorage.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MaterialApp(home: SecureTesting()));
+  runApp(const MaterialApp(home: HomePage()));
 }
 
 enum _Actions { deleteAll, isProtectedDataAvailable }
