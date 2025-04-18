@@ -4,10 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keychain/flutter_keychain.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:secure_storage_flutter_demo/SecureStorage.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MaterialApp(home: HomePage()));
+  runApp(const MaterialApp(home: SecureTesting()));
 }
 
 enum _Actions { deleteAll, isProtectedDataAvailable }
@@ -101,28 +102,18 @@ class HomePageState extends State<HomePage> {
   }
 
   Future<void> _readAll() async {
-    try{
-      final all = await _storage.readAll();
-      if(all.isEmpty){
-        await _deleteAll();
+    final all = await _storage.readAll();
+    setState(() {
+      _items
+        ..clear()
+        ..addAll(all.entries.map((e) => _SecItem(e.key, e.value)))
+        ..sort(
+              (a, b) =>
+              (int.tryParse(a.key) ?? 10).compareTo(
+                  int.tryParse(b.key) ?? 11),
+        );
+    });
 
-
-      }else {
-        print("all $all");
-        setState(() {
-          _items
-            ..clear()
-            ..addAll(all.entries.map((e) => _SecItem(e.key, e.value)))
-            ..sort(
-                  (a, b) =>
-                  (int.tryParse(a.key) ?? 10).compareTo(
-                      int.tryParse(b.key) ?? 11),
-            );
-        });
-      }
-    }catch(e){
-      print("error ===> $e");
-    }
 
   }
 
